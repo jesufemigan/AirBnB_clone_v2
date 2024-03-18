@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,13 +115,46 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        c_name = kwargs = ""
+        # split the args into two(the class and args)
+        newargs = args.split(" ", 1)
+        c_name = newargs[0]
+
+        if c_name not in HBNBCommand.classes and c_name != "":
+            print("** class doesn't  exist **")
+            return
+        elif c_name == "":
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
+        new_dict = {}
+        if len(newargs) > 1:
+            kwargs = newargs[1]
+            kwargs = kwargs.split(" ")  # split the arguments
+
+            def parse_value(input_str):
+                '''function to handle value synthax'''
+                input_str = input_str.replace('_', ' ')
+                if input_str.startswith('"') and input_str.endswith('"'):
+                    # Input is in quoted string format
+                    # Remove the quotes and return as string
+                    return input_str[1:-1]
+                elif input_str.startswith('-') and \
+                    input_str[1:].replace('.', '', 1).isdigit():
+                    # Input is an integer
+                    return float(input_str) if '.' in input_str else int(input_str)
+                elif input_str.replace('.', '', 1).isdigit():
+                    # Input is a float
+                    return float(input_str) if '.' in input_str else int(input_str)
+                else:
+                    # Input is a regular string
+                    return input_str
+            for synthax in kwargs:
+                synthax = synthax.partition("=")
+                key = synthax[0]
+                value = synthax[2]
+                new_dict[key] = parse_value(value)
+
+        new_instance = HBNBCommand.classes[c_name](**new_dict)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -187,7 +220,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +352,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
