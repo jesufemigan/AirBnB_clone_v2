@@ -14,20 +14,25 @@ from models.state import State
 from models.user import User
 
 load_dotenv()
+user = os.getenv('HBNB_MYSQL_USER')
+password = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+mydb = os.getenv('HBNB_MYSQL_DB')
 
 
 class DBStorage:
     """This class manages database storage for hbnb clone"""
     __engine = None
     __session = None
-    
+
     def __init__(self):
         """Constructor"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-                                      format(os.getenv('HBNB_MYSQL_USER'), os.getenv('HBNB_MYSQL_PWD'), os.getenv('HBNB_MYSQL_HOST'), os.getenv('HBNB_MYSQL_DB')), pool_pre_ping=True)
+                                      format(user, password, host, mydb),
+                                      pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-        
+
     def all(self, cls=None):
         """query the current database session"""
         new_dict = {}
@@ -46,23 +51,24 @@ class DBStorage:
                 key = object.__class__.__name__ + "." + object.id
                 new_dict[key] = object
         return new_dict
-    
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """commit all changes to database"""
         self.__session.commit()
-        
+
     def delete(self, obj=None):
         """delete from the current database session"""
         if obj:
             self.__session.delete(obj)
-                    
+
     def reload(self):
         """create all tables in the database"""
         Base.metadata.create_all(self.__engine)
-        SessionFactory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        SessionFactory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(SessionFactory)
         self.__session = Session()

@@ -139,12 +139,14 @@ class HBNBCommand(cmd.Cmd):
                     # Remove the quotes and return as string
                     return input_str[1:-1]
                 elif input_str.startswith('-') and \
-                    input_str[1:].replace('.', '', 1).isdigit():
+                        input_str[1:].replace('.', '', 1).isdigit():
                     # Input is an integer
-                    return float(input_str) if '.' in input_str else int(input_str)
+                    return float(input_str) if '.' in input_str \
+                        else int(input_str)
                 elif input_str.replace('.', '', 1).isdigit():
                     # Input is a float
-                    return float(input_str) if '.' in input_str else int(input_str)
+                    return float(input_str) if '.' in input_str \
+                        else int(input_str)
                 else:
                     # Input is a regular string
                     return input_str
@@ -244,10 +246,10 @@ class HBNBCommand(cmd.Cmd):
             for v in all_classes.values():
                 # if k.split('.')[0] == args:
                 print_list.append(str(v))
-            
+
         else:
             # for k, v in storage._FileStorage__objects.items():
-            for k, v in storage.all().items():
+            for v in storage.all().values():
                 print_list.append(str(v))
 
         print(print_list)
