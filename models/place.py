@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 
 from dotenv import load_dotenv
 import os
+load_dotenv()
 
 storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
