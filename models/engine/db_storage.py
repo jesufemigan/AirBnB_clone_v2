@@ -42,7 +42,7 @@ class DBStorage:
             'Review': Review
         }
         if cls:
-            classes_to_query = [classes[cls]]
+            classes_to_query = [cls]
         else:
             classes_to_query = list(classes.values())
         for cls_attr in classes_to_query:

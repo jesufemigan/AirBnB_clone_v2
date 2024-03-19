@@ -1,10 +1,15 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
+from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-from models.city import City
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class State(BaseModel, Base):
@@ -12,13 +17,15 @@ class State(BaseModel, Base):
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
     # For DB
-    cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    cities = relationship("City", backref="state", cascade="all, delete")
     # For FileStorage
-    # @property
-    # def cities(self):
-    #     from models import storage
-    #     fs_cities = storage.all(City)
-    #     for city_key in fs_cities.keys():
-    #         if city_key == State.id:
-    #             return fs_cities[city_key]
-            
+    if storage_type != 'db':
+        @property
+        def cities(self):
+            from models import storage
+            all_cities = storage.all(City)
+            cities_with_state_id = []
+            for city in all_cities.values():
+                if city['state_id'] == self.id:
+                    cities_with_state_id.append(city)
+            return all_cities
