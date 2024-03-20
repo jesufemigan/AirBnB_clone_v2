@@ -2,7 +2,6 @@
 """This module defines a class to manage database storage for hbnb clone"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from dotenv import load_dotenv
 import os
 
 from models.base_model import Base, BaseModel
@@ -13,7 +12,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-load_dotenv()
+
 user = os.getenv('HBNB_MYSQL_USER')
 password = os.getenv('HBNB_MYSQL_PWD')
 host = os.getenv('HBNB_MYSQL_HOST')

@@ -4,11 +4,9 @@ from models.base_model import BaseModel, Base
 from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
+
 storage_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
