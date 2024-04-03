@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 #sets up server for deployment of web_static
+
 #install nginx if it is not installed
 function install() {
-	if ! command -v "$1"; then
+	if ! command -v "$1" &> /dev/null; then
 		echo -e "\t Installing nginx...\n"
-		apt update -y -qq && apt install -y -qq "$1"
+		sudo apt-get update -y -qq
+		sudo apt-get install -y -qq "$1"
 		echo -e "\nSuccessfully installed nginx\n"
 		echo -e "\nSetting up Nginx..."
 		ufw allow 'Nginx HTTP'
@@ -15,20 +17,21 @@ function install() {
 }
 install nginx
 
-web_static_dir="/data/web_static/"
-shared="/shared/"
-releases="/releases/test/"
+#web_static_dir="/data/web_static/"
+#shared="/shared/"
+#releases="/releases/test/"
 
-if [ ! -d "$web_static_dir" ]; then
-	mkdir -p "$web_static_dir"
+#if [ ! -d "$web_static_dir" ]; then
+	#mkdir -p "$web_static_dir"
 
-	if [ ! -d "$web_static_dir""$shared" ]; then
+	#if [ ! -d "$web_static_dir""$shared" ]; then
 		mkdir "$web_static_dir""$shared"
-	fi
-	if [ ! -d "$web_static_dir""$releases" ]; then
+	#fi
+	#if [ ! -d "$web_static_dir""$releases" ]; then
 		mkdir -p "$web_static_dir""$releases" 
-	fi
-fi
+	#fi
+#fi
+sudo mkdir -p /data/web_static/{releases/test,shared}
 
 fake_html="\
 <html>
@@ -40,22 +43,24 @@ fake_html="\
 	</body>
 </html>
 "
-echo "$fake_html" > /data/web_static/releases/test/index.html
+echo "$fake_html" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
-sym_link="/data/web_static/current/"
+sudo rm -f /data/web_static/current
+sudo ln -sf /data.web_static/releases/test /data/web_static/current
+#sym_link="/data/web_static/current/"
 
-if [ -L "$sym_link" ]; then
-	rm -r "$sym_link"
-	ln -s "$sym_link" "$web_static_dir""$releases"
-else
-	ln -s "$sym_link" "$web_static_dir""$releases"
-fi
+#if [ -L "$sym_link" ]; then
+#	rm -f "$sym_link"
+#	ln -s "$web_static_dir""$releases" "$sym_link"
+#else
+#	ln -s "$web_static_dir""$releases" "$sym_link"
+#fi
 
-chown -R ubuntu:ubuntu /data/
+sudo chown -R ubuntu:ubuntu /data/
 
 new_block="\
 location /hbnb_static {
-	alias /data/web_static/current/;
+\talias /data/web_static/current/;
 }
 "
 nginx_config="/etc/nginx/sites-available/default"
@@ -70,3 +75,5 @@ if [ -f "$nginx_config" ]; then
 else
 	echo "NGINX not properly configured as $nginx_config does not exist"
 fi
+
+echo -e "\nWeb Server set up successfully for deployment."
