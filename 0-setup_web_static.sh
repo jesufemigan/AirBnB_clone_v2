@@ -33,15 +33,7 @@ install nginx
 #fi
 sudo mkdir -p /data/web_static/{releases/test,shared}
 
-fake_html="\
-<html>
-	<head>
-	</head>
-	<body>
-		Holberton School
-	</body>
-</html>
-"
+fake_html="<html><head></head><body>Holberton School</body></html>"
 echo "$fake_html" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
 sudo rm -rf /data/web_static/current
