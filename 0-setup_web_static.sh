@@ -25,10 +25,10 @@ install nginx
 	#mkdir -p "$web_static_dir"
 
 	#if [ ! -d "$web_static_dir""$shared" ]; then
-		mkdir "$web_static_dir""$shared"
+		#mkdir "$web_static_dir""$shared"
 	#fi
 	#if [ ! -d "$web_static_dir""$releases" ]; then
-		mkdir -p "$web_static_dir""$releases" 
+		#mkdir -p "$web_static_dir""$releases" 
 	#fi
 #fi
 sudo mkdir -p /data/web_static/{releases/test,shared}
