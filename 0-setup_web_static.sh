@@ -36,10 +36,9 @@ sudo mkdir -p /data/web_static/{releases/test,shared}
 fake_html="\
 <html>
 	<head>
-		<title>Fake Content</title>
 	</head>
 	<body>
-		<h1>This is a fake html page</h1>
+		Holberton School
 	</body>
 </html>
 "
