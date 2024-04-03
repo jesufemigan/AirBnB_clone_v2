@@ -75,5 +75,5 @@ if [ -f "$nginx_config" ]; then
 else
 	echo "NGINX not properly configured as $nginx_config does not exist"
 fi
-
+sudo service nginx reload
 echo -e "\nWeb Server set up successfully for deployment."
