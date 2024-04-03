@@ -9,7 +9,7 @@ function install() {
 		sudo apt-get install -y -qq "$1"
 		echo -e "\nSuccessfully installed nginx\n"
 		echo -e "\nSetting up Nginx..."
-		ufw allow 'Nginx HTTP'
+		sudo ufw allow 'Nginx HTTP'
 		echo -e "Nginx is set up successfully!...\n"
 	else
 		echo -e "\nNginx is already installed.\n"
@@ -45,7 +45,7 @@ fake_html="\
 "
 echo "$fake_html" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
-sudo rm -f /data/web_static/current
+sudo rm -rf /data/web_static/current
 sudo ln -sf /data.web_static/releases/test /data/web_static/current
 #sym_link="/data/web_static/current/"
 
@@ -75,5 +75,5 @@ if [ -f "$nginx_config" ]; then
 else
 	echo "NGINX not properly configured as $nginx_config does not exist"
 fi
-sudo service nginx reload
+sudo service nginx restart
 echo -e "\nWeb Server set up successfully for deployment."
