@@ -50,10 +50,9 @@ sudo ln -sf /data.web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 new_block="\
-	location /hbnb_static {
-		alias /data/web_static/current/;
-}
-"
+	location /hbnb_static {\
+		alias /data/web_static/current/;\
+}"
 nginx_config="/etc/nginx/sites-available/default"
 
 if [ -f "$nginx_config" ]; then
