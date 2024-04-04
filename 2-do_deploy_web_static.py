@@ -29,12 +29,18 @@ def do_deploy(archive_path):
     import os
     if os.path.exists(archive_path):
         try:
+            file = archive_path.split('/')[-1]
+            file_w_ext = file[:-4]  # file_without_extension
+            source_path = '/data/web_static/releases/'
             put(archive_path, '/tmp/')
-            target_folder = f'/data/web_static/releases/{archive_path[:-4]}'
-            run(f'tar -xzf /tmp/{archive_path} -C {target_folder}')
-            run(f'rm -rf /tmp/{archive_path}')
+            run(f'mkdir -p {source_path}{file_w_ext}/')
+            run(f'tar -xzf /tmp/{file} -C {source_path}{file_w_ext}/')
+            run(f'rm /tmp/{file}')
+            run(f'mv {source_path}{file_w_ext}/web_static/* \
+{source_path}{file_w_ext}/')
+            run(f'rm -rf {source_path}{file_w_ext}/web_static')
             run(f'rm -rf /data/web_static/current')
-            run(f'ln -s {target_folder} /data/web_static/current')
+            run(f'ln -s {source_path}{file_w_ext} /data/web_static/current')
             return True
         except:
             return False
