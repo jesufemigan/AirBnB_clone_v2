@@ -33,14 +33,16 @@ def do_deploy(archive_path):
             file_w_ext = file[:-4]  # file_without_extension
             source_path = '/data/web_static/releases/'
             put(archive_path, '/tmp/')
-            run(f'mkdir -p {source_path}{file_w_ext}/')
-            run(f'tar -xzf /tmp/{file} -C {source_path}{file_w_ext}/')
-            run(f'rm /tmp/{file}')
-            run(f'mv {source_path}{file_w_ext}/web_static/* \
-{source_path}{file_w_ext}/')
-            run(f'rm -rf {source_path}{file_w_ext}/web_static')
-            run(f'rm -rf /data/web_static/current')
-            run(f'ln -s {source_path}{file_w_ext} /data/web_static/current')
+            run('mkdir -p {}{}/'.format(source_path, file_w_ext))
+            run('tar -xzf /tmp/{} -C {}{}/'.format(file, source_path,
+                file_w_ext))
+            run('rm /tmp/{}'.format(file))
+            run('mv {0}{1}/web_static/* {0}{1}/'.format(source_path,
+                file_w_ext))
+            run('rm -rf {}{}/web_static'.format(source_path, file_w_ext))
+            run('rm -rf /data/web_static/current')
+            run('ln -s {}{}/ /data/web_static/current'.format(source_path,
+                file_w_ext))
             return True
         except:
             return False
