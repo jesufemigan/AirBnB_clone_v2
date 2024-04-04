@@ -37,7 +37,7 @@ fake_html="<html><head></head><body>Holberton School</body></html>"
 echo "$fake_html" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
 sudo rm -rf /data/web_static/current
-sudo ln -sf /data.web_static/releases/test /data/web_static/current
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
 #sym_link="/data/web_static/current/"
 
 #if [ -L "$sym_link" ]; then
