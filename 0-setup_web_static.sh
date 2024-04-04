@@ -50,8 +50,8 @@ sudo ln -sf /data.web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 new_block="\
-location /hbnb_static {
-	alias /data/web_static/current/;
+	location /hbnb_static {
+		alias /data/web_static/current/;
 }
 "
 nginx_config="/etc/nginx/sites-available/default"
@@ -60,7 +60,9 @@ if [ -f "$nginx_config" ]; then
 	if grep -q "location /hbnb_static" "$nginx_config"; then
 		echo "Configuration block for hbnb_static exists in $nginx_config"
 	else
-		sudo sed -i "/server {/a\\n\\t$new_block" "$nginx_config"
+		sudo sed -i '/server {/a\
+'"$new_block"'
+' "$nginx_config"
 		echo "Added configuration block for hbnb_static"
 	fi
 else
