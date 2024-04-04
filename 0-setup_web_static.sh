@@ -52,14 +52,14 @@ sudo chown -R ubuntu:ubuntu /data/
 new_block='\
 	location /hbnb_static {\
 		alias /data/web_static/current/;\
-}'
+	}'
 nginx_config="/etc/nginx/sites-available/default"
 
 if [ -f "$nginx_config" ]; then
 	if grep -q "location /hbnb_static" "$nginx_config"; then
 		echo "Configuration block for hbnb_static exists in $nginx_config"
 	else
-		sudo sed -i '/server {/a\
+		sudo sed -i '/listen 80 default_server/a\
 '"$new_block"'
 ' "$nginx_config"
 		echo "Added configuration block for hbnb_static"
