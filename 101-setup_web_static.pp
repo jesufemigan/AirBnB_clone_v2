@@ -1,17 +1,14 @@
 #pippet file to configure web_Server
 
 package { 'nginx':
-  ensure  => present,
-  command => /usr/bin/apt
+  ensure  => 'present',
 }
 
-file { '/data/web_static/releases/test':
+file { ['/data, /data/web_static', /data/web_static/releases,
+	/data/web_static/shared']:
   ensure  => 'directory',
-  recurse => true.
-}
-
-file { '/data/web_static/shared':
-  ensure  => 'directory',
+  owner   => 'ubuntu',
+  group   => 'ubuntu'
   recurse => true,
 }
 
@@ -23,13 +20,6 @@ file { '/data/web_static/releases/test/index.html':
 file { '/data/web_static/current':
   ensure => 'link',
   target => '/data/web_static/releases/test/'
-}
-
-file { '/data':
-  ensure  => 'directory',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  recurse => true
 }
 
 $nginx_path='/etc/nginx/sites-available/default'
