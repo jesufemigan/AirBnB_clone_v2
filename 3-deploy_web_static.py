@@ -4,6 +4,7 @@
 
 from datetime import datetime
 from fabric.api import *
+import os
 
 env.hosts = ['54.172.227.144', '54.144.151.176']
 env.user = ['ubuntu']
@@ -15,9 +16,10 @@ def do_pack():
     """
 
     time = datetime.now()
-    archive = 'web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
-    local('mkdir -p versions')
-    create = local('tar -cvzf versions/{} web_static'.format(archive))
+    archive = 'versions/web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
+    if os.path.isdir("versions") is False:
+        local('mkdir versions')
+    create = local('tar -cvzf {} web_static'.format(archive))
     if create is not None:
         return archive
     else:
@@ -26,7 +28,6 @@ def do_pack():
 
 def do_deploy(archive_path):
     """a function that deploys"""
-    import os
     if os.path.exists(archive_path):
         try:
             file = archive_path.split('/')[-1]
