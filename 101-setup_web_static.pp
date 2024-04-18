@@ -28,6 +28,8 @@ exec { 'nginx config':
 	  /data/web_static/current/;}' $nginx_path,
 }
 
-exec { 'nginx restart':
-  path  => '/etc/init.d'
+service { 'nginx':
+  ensure  => running,
+  enable  => true,
+  require => Package['nginx'],
 }

@@ -71,3 +71,7 @@ class DBStorage:
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(SessionFactory)
         self.__session = Session()
+
+    def close(self):
+        """stop all transactions in the database"""
+        self.__session.close()
