@@ -24,4 +24,5 @@ def c_route(text):
     return f"C {text}"
 
 
-app.run()
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
