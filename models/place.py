@@ -19,6 +19,7 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
@@ -34,7 +35,7 @@ class Place(BaseModel, Base):
     amenities = relationship(
         "Amenity", secondary=place_amenity, viewonly=False)
     amenity_ids = []
-
+    
     if storage_type != 'db':
         @property
         def reviews(self):
