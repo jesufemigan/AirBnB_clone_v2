@@ -19,6 +19,7 @@ def state_list():
 
 @app.teardown_appcontext
 def close_sql():
+    """close file storage"""
     storage.close()
 
 
