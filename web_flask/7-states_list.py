@@ -13,15 +13,16 @@ app = Flask(__name__)
 def state_list():
     '''definition for /states_list'''
     all_states = storage.all(State)
+    # states = all_states.values()
     data = {'states': all_states}
     return render_template("7-states_list.html", data=data)
 
 
 @app.teardown_appcontext
-def close_sql():
+def close_sql(exc):
     """close file storage"""
     storage.close()
 
 
 if __name__ == "__main__":
-    app.run(port=5000, host='0.0.0.0')
+    app.run(port=5000, host='0.0.0.0', debug=True)
