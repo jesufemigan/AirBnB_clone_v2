@@ -22,6 +22,7 @@ def states(id):
     for id, state in all_states.items():
         if id == full_id:
             return render_template("9-states.html", state=state)
+    return render_template("9-states.html")
 
 
 @app.teardown_appcontext
