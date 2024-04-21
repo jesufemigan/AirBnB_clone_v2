@@ -11,15 +11,15 @@ app = Flask(__name__)
 def cities_by_state():
     """definition for /cities_by_state"""
     all_states = storage.all(State)
-    data = {'states': all_states}
-    return render_template("8-cities_by_state", data=data)
+    states = all_states.values()
+    return render_template("8-cities_by_states.html", states=states)
 
 
 @app.teardown_appcontext
-def close_storage():
+def close_storage(exc):
     """Close file storage"""
     storage.close()
-    
-    
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
