@@ -14,11 +14,13 @@ def hbnb_filter():
     '''route for /hbnb_filters'''
     states = storage.all(State)
     amenities = storage.all(Amenity)
-    return render_template("10-hbnb_filters.html", states=states, amenities=amenities)
+    return render_template("10-hbnb_filters.html", states=states,
+                           amenities=amenities)
+
 
 @app.teardown_appcontext
 def close(exc):
-    '''close db''' 
+    '''close db'''
     storage.close()
 
 
