@@ -7,29 +7,28 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/cities_by_states', strict_slashes=False)
+@app.route('/states', strict_slashes=False)
 def cities_by_state():
     """definition for /cities_by_state"""
-    all_states = storage.all(State)
-    data = {'states': all_states}
-    return render_template("8-cities_by_state", data=data)
+    states = storage.all(State)
+    return render_template("7-states_list.html", states=states)
 
 
 @app.route('/states/<string:id>', strict_slashes=False)
 def states(id):
     """defintion for /states/id"""
     all_states = storage.all(State)
-    state_by_id = all_states.get(id)
-    if state_by_id:
-        data = {'state': state_by_id}
-        return render_template("9-states.html", data=data)
+    full_id = 'State.' + id
+    for id, state in all_states.items():
+        if id == full_id:
+            return render_template("9-states.html", state=state)
 
 
 @app.teardown_appcontext
-def close_storage():
+def close_storage(exc):
     """Close file storage"""
     storage.close()
-    
-    
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
