@@ -7,7 +7,6 @@ import os
 import models
 
 
-
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              nullable=False, primary_key=True),
@@ -18,7 +17,6 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    
     if models.storage_type == 'db':
         __tablename__ = "places"
         name = Column(String(128), nullable=False)
@@ -31,12 +29,13 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float)
         longitude = Column(Float)
-        reviews = relationship("Review", backref="place", cascade="all, delete")
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete")
         amenities = relationship(
             "Amenity", secondary="place_amenity", viewonly=False)
     else:
         amenity_ids = []
-    
+
         @property
         def reviews(self):
             """getter attribute for reviews"""
