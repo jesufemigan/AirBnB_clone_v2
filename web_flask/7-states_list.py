@@ -13,9 +13,8 @@ app = Flask(__name__)
 def state_list():
     '''definition for /states_list'''
     all_states = storage.all(State)
-    # states = all_states.values()
-    data = {'states': all_states}
-    return render_template("7-states_list.html", data=data)
+    states = all_states.values()
+    return render_template("7-states_list.html", states=states)
 
 
 @app.teardown_appcontext
