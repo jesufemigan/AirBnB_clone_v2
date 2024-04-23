@@ -16,23 +16,25 @@
 
 	line-height: 20px;
 	border-right: 1px solid #DDDDDD;
+	position: relative;
 }
 
-.filter_amenities {
+.amenities {
 	display: inline;
 	vertical-align: middle;
 	height: 100%;
 	float: left;
-    width: 25%;
+    width: 50%;
 
 	line-height: 20px;
+	position: relative;
 }
 
 .popover {
 	list-style-type: none;
 	display: none;
 	background-color: #FAFAFA;
-	width: 100%;
+	position: absolute;
 
 	margin-left: -1px;
 	margin-top: 8px;
@@ -43,13 +45,16 @@
 
 	max-height: 300px;
 	overflow-y: scroll;
+	scrollbar-width: none;
+	z-index: 30;
 }
 
 .locations:hover .popover {
 	display: inline-block;
+	width: 100%;
 }
 
-.filter_amenities:hover .popover {
+.amenities:hover .popover {
 	display: inline-block;
 }
 
@@ -58,9 +63,6 @@ ul {
 	padding: 0px;
 	padding-bottom: 20px;
 }
-
-li {
-}	
 
 h2 {
 	font-size: 16px;
